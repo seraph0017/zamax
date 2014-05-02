@@ -1,0 +1,8 @@
+backports.ssl-match-hostname==3.4.0.2
+gnureadline==6.3.3
+greenlet==0.4.2
+ipython==2.0.0
+motor==0.2
+pymongo==2.7
+tornado==3.2
+wsgiref==0.1.2

@@ -6,5 +6,8 @@ class MainHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def get(self):
-        self.write('hello world')
+        self.render('index.html')
+        
+
+    def on_response(self,response):
         self.finish()

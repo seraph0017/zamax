@@ -14,8 +14,9 @@ class Application(tornado.web.Application):
         settings = dict(
             static_path = os.path.join(os.path.dirname(__file__),'..','static'),
             template_path = os.path.join(os.path.dirname(__file__),'..','templates'),
+            cookie_secret="seraph",
             debug=True,
            ) 
         tornado.web.Application.__init__(self,handlers,**settings)
-        self.db = motor.MotorClient('localhost',27017)['zamax']
+        self.db = motor.MotorClient('localhost',27017)['maxblog']
 

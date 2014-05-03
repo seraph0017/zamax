@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" context="make for test">
+<meta name="author" context="max">
+<title>{% block title %}{% end %}</title>
+<link href="{{ static_url("css/bootstrap.min.css") }}" rel="stylesheet">
+<link href="{{ static_url("css/bootstrap-theme.min.css") }}" rel="stylesheet">
+<link href="{{ static_url("css/common.css") }}" rel="stylesheet">
+</head>
+<body>
+<div class='bs-header'>
+    <nav class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="navigation">
+    </nav>
+</div>
+<div class="container bs-docs-container">
+    <div class="row">
+        <div class="col-md-2">
+            {% block feature %}
+            {% end %}
+        </div>
+        <div class="col-md-8">
+            {% block board %}
+            {% end %}
+        </div>
+        <div class="col-md-2">
+            {% block step %}
+            {% end %}
+        </div>
+    </div>
+</div>
+<footer class="bs-footer" role="contentinfo">@max</footer>
+<script src="{{ static_url("js/jquery.js") }}"></script>
+<script src="{{ static_url("js/bootstrap.min.js") }}"></script>
+</body>
+</html>

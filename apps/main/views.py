@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 #encoding:utf-8
 from tornado import gen
+from tornado.web import asynchronous
 from tools.utils import BaseHandler
 
 
 class MainHandler(BaseHandler):
 
+    @asynchronous
     @gen.coroutine
     def get(self):
         feature_dict = {}
@@ -34,6 +36,7 @@ class MainHandler(BaseHandler):
                 for step in (yield cursor.to_list(10)):
                     steps.append((step['_id'],step['name']))
             module_dict[(module['_id'],module['name'])] = steps
+        self.finish()
 
         self.render('admin/index.html',features=feature_dict,modules=module_dict)
 
@@ -43,6 +46,7 @@ class MainHandler(BaseHandler):
 
 class ScenarioDetailsHandler(BaseHandler):
 
+    @asynchronous
     @gen.coroutine
     def get(self,scenario_id):
 
@@ -74,7 +78,6 @@ class ScenarioDetailsHandler(BaseHandler):
             module_dict[(module['_id'],module['name'])] = steps
 
         scenario_board = yield self.db.scenario.find_one({"_id":scenario_id})
-        print scenario_board
         steps_list = []
         for step in scenario_board['steps']:
             cursor = self.db.step.find({"_id":step})
@@ -86,6 +89,22 @@ class ScenarioDetailsHandler(BaseHandler):
                 steps_list=steps_list,
                 features=feature_dict,
                 modules=module_dict)
+
+
+
+
+class FeatureHandler(BaseHandler):
+
+    @asynchronous
+    @gen.coroutine
+    def post(self):
+        id = self.get_argument(self.get_id)
+        name = self.get_argument("name") 
+        resp = yield self.db.feature.insert({
+            "_id":id,
+            "name":name})
+        return
+        
 
 
 

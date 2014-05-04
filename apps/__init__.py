@@ -9,8 +9,8 @@ import motor
 class Application(tornado.web.Application):
     def __init__(self):
         handlers=[
-            (r'/',main.views.MainHandler),
-            (r'/(.*?)',main.views.ScenarioDetailsHandler),
+            (r'^/$',main.views.MainHandler),
+            (r'^/(.*?)$',main.views.ScenarioDetailsHandler),
             ]
         settings = dict(
             static_path = os.path.join(os.path.dirname(__file__),'..','static'),

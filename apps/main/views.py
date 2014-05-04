@@ -36,7 +36,6 @@ class MainHandler(BaseHandler):
                 for step in (yield cursor.to_list(10)):
                     steps.append((step['_id'],step['name']))
             module_dict[(module['_id'],module['name'])] = steps
-        self.finish()
 
         self.render('admin/index.html',features=feature_dict,modules=module_dict)
 

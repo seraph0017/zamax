@@ -1,0 +1,9 @@
+{% extends "index.html" %}
+{% block board %}
+<h2>{{scenario_title}}</h2>
+<div class="list-group">
+    {% for step in steps_list %}
+    <a href="#" class="list-group-item">{{step[1]}}</a>
+    {% end %}
+</div>
+{% end %}

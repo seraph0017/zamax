@@ -1,12 +1,76 @@
 {% extends '../layout.html' %}
 {% block title %}this is index{% end %}
 {% block feature %}
-{{ resp }}
-<h1>seraph</h1>
+    <div class="J_regist_feature">
+        <a>添加feature</a>
+    </div>
+{% for k,v in features.iteritems() %}
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#{{k[0]}}">
+                        {{k[1]}}
+                    </a>
+                </h4>
+            </div>
+            <div id="{{k[0]}}" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <table class="table">
+                        <tr>
+                            <td><a class="J_regist_scenario">给{{k[1]}}添加新的scenario</a></td>
+                        </tr>
+                        {% for scenario in v %}
+                        <tr>
+                            <td><a href="{{scenario[0]}}">{{scenario[1]}}</a></td>
+                        </tr>
+                        {% end %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% end %}
 {% end %}
 {% block board %}
 <h1>seraph</h1>
 {% end %}
 {% block step %}
-<h1>seraph</h1>
+{% for k,v in modules.iteritems() %}
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-toggle="collapse" data-parent="#accordion" href="#{{k[0]}}">
+                        {{k[1]}}
+                    </a>
+                </h4>
+            </div>
+            <div id="{{k[0]}}" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <table class="table">
+                        {% for step in v %}
+                        <tr>
+                            <td>
+                                <div class="btn-group btn-group-xs">
+                                    <button type="button" class="btn btn-default">
+                                        假如
+                                    </button>
+                                    <button type="button" class="btn btn-default">
+                                        而且 
+                                    </button>
+                                    <button type="button" class="btn btn-default">
+                                        那么
+                                    </button>
+                                </div>
+                            </td>
+                            <td>{{step[1]}}</td>
+                        </tr>
+                        {% end %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% end %}
 {% end %}

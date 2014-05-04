@@ -10,6 +10,7 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers=[
             (r'/',main.views.MainHandler),
+            (r'/(.*?)',main.views.ScenarioDetailsHandler),
             ]
         settings = dict(
             static_path = os.path.join(os.path.dirname(__file__),'..','static'),
@@ -18,5 +19,5 @@ class Application(tornado.web.Application):
             debug=True,
            ) 
         tornado.web.Application.__init__(self,handlers,**settings)
-        self.db = motor.MotorClient('localhost',27017)['maxblog']
+        self.db = motor.MotorClient('localhost',27017)['zamax']
 

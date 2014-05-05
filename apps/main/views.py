@@ -4,6 +4,7 @@ from tornado import gen
 from tornado.web import asynchronous
 from tools.utils import BaseHandler
 
+import json
 
 class MainHandler(BaseHandler):
 
@@ -16,24 +17,24 @@ class MainHandler(BaseHandler):
         modules = []
 
         cursor = self.db.feature.find()
-        for feature in (yield cursor.to_list(10)):
+        for feature in (yield cursor.to_list(50)):
             features.append(feature)
         for feature in features:
             scenarios = []
             for scenario in feature['scenarios']:
                 cursor = self.db.scenario.find({"_id":scenario})
-                for scenario in (yield cursor.to_list(10)):
+                for scenario in (yield cursor.to_list(50)):
                     scenarios.append((scenario['_id'],scenario['name']))
             feature_dict[(feature['_id'],feature['name'])] = scenarios
 
         cursor = self.db.module.find()
-        for module in (yield cursor.to_list(10)):
+        for module in (yield cursor.to_list(50)):
             modules.append(module)
         for module in modules:
             steps = []
             for step in module['steps']:
                 cursor = self.db.step.find({"_id":step})
-                for step in (yield cursor.to_list(10)):
+                for step in (yield cursor.to_list(50)):
                     steps.append((step['_id'],step['name']))
             module_dict[(module['_id'],module['name'])] = steps
 
@@ -55,24 +56,24 @@ class ScenarioDetailsHandler(BaseHandler):
         modules = []
 
         cursor = self.db.feature.find()
-        for feature in (yield cursor.to_list(10)):
+        for feature in (yield cursor.to_list(50)):
             features.append(feature)
         for feature in features:
             scenarios = []
             for scenario in feature['scenarios']:
                 cursor = self.db.scenario.find({"_id":scenario})
-                for scenario in (yield cursor.to_list(10)):
+                for scenario in (yield cursor.to_list(50)):
                     scenarios.append((scenario['_id'],scenario['name']))
             feature_dict[(feature['_id'],feature['name'])] = scenarios
 
         cursor = self.db.module.find()
-        for module in (yield cursor.to_list(10)):
+        for module in (yield cursor.to_list(50)):
             modules.append(module)
         for module in modules:
             steps = []
             for step in module['steps']:
                 cursor = self.db.step.find({"_id":step})
-                for step in (yield cursor.to_list(10)):
+                for step in (yield cursor.to_list(50)):
                     steps.append((step['_id'],step['name']))
             module_dict[(module['_id'],module['name'])] = steps
 
@@ -97,16 +98,34 @@ class FeatureHandler(BaseHandler):
     @asynchronous
     @gen.coroutine
     def post(self):
-        id = self.get_argument(self.get_id)
-        name = self.get_argument("name") 
-        resp = yield self.db.feature.insert({
-            "_id":id,
-            "name":name})
-        return
+        name = self.get_argument("feature_name") 
+        result = yield self.db.feature.insert({
+            "_id":self.get_id,
+            "name":name,         
+            "scenarios":[],
+            })
+        resp = {
+                'status':200,
+                'feature_id':result,
+                }
+        self.set_header("content-type","application/json")
+        self.write(json.dumps(resp))
+
         
 
 
+class ScenaroHandler(BaseHandler):
 
+    @asynchronous
+    @gen.coroutine
+    def post(self):
+        name = self.get_argument("scenario_name")
+        feature = self.get_argument("feature_id")
+        scenario_id = yield self.db.scenario.insert({
+            "_id":self.get_id,
+            "name":name,
+            "steps":[],
+            })
 
 
 

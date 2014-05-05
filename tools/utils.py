@@ -15,5 +15,5 @@ class BaseHandler(tornado.web.RequestHandler):
         # todo db return didn't finish
 
     @property
-    def get_id():
+    def get_id(self):
         return str(ObjectId())

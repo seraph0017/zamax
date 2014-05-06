@@ -114,18 +114,28 @@ class FeatureHandler(BaseHandler):
         
 
 
-class ScenaroHandler(BaseHandler):
+class ScenarioHandler(BaseHandler):
 
     @asynchronous
     @gen.coroutine
     def post(self):
         name = self.get_argument("scenario_name")
-        feature = self.get_argument("feature_id")
+        feature_id = self.get_argument("feature_id")
         scenario_id = yield self.db.scenario.insert({
             "_id":self.get_id,
             "name":name,
             "steps":[],
             })
+        feature = yield self.db.feature.find_one({"_id":feature_id})
+        feature['scenarios'].append(scenario_id)
+        result = yield self.db.feature.update({"_id":feature_id},feature)
+        resp = {
+                'status':200,
+                'feature_id':result,
+                'scenario_id':scenario_id,
+                }
+        self.set_header("content-type","application/json")
+        self.write(json.dumps(resp))
 
 
 

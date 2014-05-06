@@ -11,6 +11,7 @@ class Application(tornado.web.Application):
         handlers=[
             (r'/',main.views.MainHandler),
             (r'/feature/',main.views.FeatureHandler),
+            (r'/scenario/',main.views.ScenarioHandler),
             (r'/(.*?)',main.views.ScenarioDetailsHandler),
             ]
         settings = dict(

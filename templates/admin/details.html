@@ -1,9 +1,30 @@
 {% extends "index.html" %}
 {% block board %}
 <h2>{{scenario_title}}</h2>
-<div class="list-group">
-    {% for step in steps_list %}
-    <a href="#" class="list-group-item">{{step[1]}}</a>
-    {% end %}
-</div>
+<form role="form">
+    <table class="table">
+        {% for step in steps_list %}
+        <tr>
+            <td>
+                <input class="form-control" value="{{step[1]}}" disabled="true"/>
+            </td>
+            <td class="col-xs-2">
+                <div class="btn-group btn-group-xs">
+                    <button type="button" class="btn btn-default">向上</button>
+                    <button type="button" class="btn btn-default">向下</button>
+                    <button type="button" class="btn btn-default">修改</button>
+                    <button type="button" class="btn btn-default">删除</button>
+                </div>
+            </td>
+        </tr>
+        {% end %}
+    </table>
+</form>
+{% end %}
+{% block script_ext %}
+<script type="text/javascript">
+$(document).ready(function(){
+        console.log("james")
+        })
+</script>
 {% end %}

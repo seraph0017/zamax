@@ -51,15 +51,15 @@
                     <table class="table">
                         {% for step in v %}
                         <tr>
-                            <td>
+                            <td class="col-xs-2">
                                 <div class="btn-group btn-group-xs">
-                                    <button type="button" class="btn btn-default">
+                                    <button id="given" belongS="{{step[0]}}" type="button" class="btn btn-default">
                                         假如
                                     </button>
-                                    <button type="button" class="btn btn-default">
+                                    <button id="and" belongS="{{step[0]}}" type="button" class="btn btn-default">
                                         而且 
                                     </button>
-                                    <button type="button" class="btn btn-default">
+                                    <button id="then" belongS="{{step[0]}}" type="button" class="btn btn-default">
                                         那么
                                     </button>
                                 </div>
@@ -166,7 +166,6 @@ $(document).ready(function(){
                 window.location.reload(); 
             };
             });
-        console.log(feature_id);
         return false;
         });
     });

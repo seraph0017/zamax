@@ -41,9 +41,6 @@ class MainHandler(BaseHandler):
         self.render('admin/index.html',features=feature_dict,modules=module_dict)
 
 
-
-
-
 class ScenarioDetailsHandler(BaseHandler):
 
     @asynchronous
@@ -78,19 +75,29 @@ class ScenarioDetailsHandler(BaseHandler):
             module_dict[(module['_id'],module['name'])] = steps
 
         scenario_board = yield self.db.scenario.find_one({"_id":scenario_id})
-        steps_list = []
-        for step in scenario_board['steps']:
-            cursor = self.db.step.find({"_id":step})
-            for step in (yield cursor.to_list(50)):
-                steps_list.append((step['_id'],step['name']))
 
         self.render('admin/details.html',
-                scenario_title=scenario_board['name'],
-                steps_list=steps_list,
+                scenario_title=scenario_board,
+                steps_list=scenario_board['steps'],
                 features=feature_dict,
                 modules=module_dict)
 
 
+
+    @asynchronous
+    @gen.coroutine
+    def post(self,scenario_id):
+        value_list = self.get_arguments("value_list[]")
+        scenario = yield self.db.scenario.find_one({"_id":scenario_id})
+        scenario['steps'].extend(value_list)
+        result = yield self.db.scenario.update({"_id":scenario_id},scenario)
+
+        resp = {
+                'status':200,
+                'scenario_id':result,
+                }
+        self.set_header("content-type","application/json")
+        self.write(json.dumps(resp))
 
 
 class FeatureHandler(BaseHandler):
@@ -110,8 +117,6 @@ class FeatureHandler(BaseHandler):
                 }
         self.set_header("content-type","application/json")
         self.write(json.dumps(resp))
-
-        
 
 
 class ScenarioHandler(BaseHandler):

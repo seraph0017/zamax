@@ -1,30 +1,92 @@
 {% extends "index.html" %}
 {% block board %}
-<h2>{{scenario_title}}</h2>
-<form role="form">
+<form role="form" id="scenarioDetailsForm">
+<h2>{{scenario_title['name']}}</h2>
     <table class="table">
-        {% for step in steps_list %}
-        <tr>
-            <td>
-                <input class="form-control" value="{{step[1]}}" disabled="true"/>
-            </td>
-            <td class="col-xs-2">
-                <div class="btn-group btn-group-xs">
-                    <button type="button" class="btn btn-default">向上</button>
-                    <button type="button" class="btn btn-default">向下</button>
-                    <button type="button" class="btn btn-default">修改</button>
-                    <button type="button" class="btn btn-default">删除</button>
-                </div>
-            </td>
-        </tr>
+        {% if steps_list %}
+            {% for step in steps_list %}
+            {% module ScenarioStep(step) %}
+            {% end %}
+        {% else %}
+        <tbody></tbody>
         {% end %}
     </table>
+    <hr>
+    <button type="submit" class="btn btn-primary pull-right">保存</button> 
 </form>
 {% end %}
 {% block script_ext %}
 <script type="text/javascript">
+function scenarioStepPlus(gat,step){
+    var before_dom = '<tr>' + 
+                    '<td>' +
+                    '<input class="form-control" value="';
+        after_dom = '" disabled="true" />' + 
+                    '</td>' +
+                    '<td class="col-xs-2">' +
+                        '<div class="btn-group btn-group-xs"> ' +
+                        '<button type="button" class="btn btn-default">向上</button>' +
+                        '<button type="button" class="btn btn-default">向下</button>' +
+                        '<button type="button" class="btn btn-default">修改</button>' +
+                        '<button type="button" class="btn btn-default">删除</button>' +
+                        '</div>' +
+                    '</td>' +
+                '</tr>';
+        final_dom = before_dom + gat + ' ' + step + after_dom;
+        return final_dom;
+}
+
+function getAllValue(locate){
+    var value_list = new Array();
+
+    for (var i=0;i<$(locate).length;i++){
+        value_list.push($(locate).eq(i).val());
+    }
+    return value_list;
+}
+
 $(document).ready(function(){
-        console.log("james")
-        })
+
+        var step = null;
+            end_table = '#scenarioDetailsForm tbody:last-child';
+            belong_attr = 'belongS';
+            given = '.given';
+            and = '.and';
+            then = '.then';
+            scenario_details_form_locate = '#scenarioDetailsForm';
+            form_input_locate = '#scenarioDetailsForm input';
+            value_list = new Array();
+            data = null;
+            post_url = window.location.href;
+
+
+        $(given).click(function(){
+            step = $(this).attr(belong_attr);
+            $(end_table).append(scenarioStepPlus('假如',step));
+            });
+        $(and).click(function(){
+            step = $(this).attr(belong_attr);
+            $(end_table).append(scenarioStepPlus('而且',step));
+            });
+        $(then).click(function(){
+            step = $(this).attr(belong_attr);
+            $(end_table).append(scenarioStepPlus('那么',step));
+            });
+
+
+        $(scenario_details_form_locate).submit(function(){
+            value_list = getAllValue(form_input_locate);
+            data = {
+                'value_list':value_list,
+                '_xsrf':getCookie("_xsrf"),
+            }
+            $.post(post_url,data,function(json){
+                if(json['status']==200){
+                    window.location.reload(); 
+                };
+                });
+            return false;
+            });
+        });
 </script>
 {% end %}

@@ -53,13 +53,13 @@
                         <tr>
                             <td class="col-xs-2">
                                 <div class="btn-group btn-group-xs">
-                                    <button id="given" belongS="{{step[0]}}" type="button" class="btn btn-default">
+                                    <button belongS="{{step[1]}}" type="button" class="btn btn-default given">
                                         假如
                                     </button>
-                                    <button id="and" belongS="{{step[0]}}" type="button" class="btn btn-default">
+                                    <button belongS="{{step[1]}}" type="button" class="btn btn-default and">
                                         而且 
                                     </button>
-                                    <button id="then" belongS="{{step[0]}}" type="button" class="btn btn-default">
+                                    <button belongS="{{step[1]}}" type="button" class="btn btn-default then">
                                         那么
                                     </button>
                                 </div>
@@ -123,6 +123,10 @@
 {% end %}
 {% block script %}
 <script type="text/javascript">
+function getCookie(name) {
+    var c = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return c ? c[1] : undefined;
+}
 $(document).ready(function(){
     var baseurl = window.location.host;
         finaurl = 'http://' + baseurl + '/'; 
@@ -130,10 +134,6 @@ $(document).ready(function(){
         scenario_name = null;
         feature_name = null;
 
-    function getCookie(name) {
-        var c = document.cookie.match("\\b" + name + "=([^;]*)\\b");
-        return c ? c[1] : undefined;
-    }
 
     $('a.J_regist_scenario').click(function(){
         $('#featureId').val($(this).attr('belongS'));

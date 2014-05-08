@@ -5,6 +5,7 @@ import main.views
 import os
 import motor
 
+from main.modules import ScenarioStepModule 
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -20,6 +21,7 @@ class Application(tornado.web.Application):
             cookie_secret="1231jfijaosjdfijasojdfijaosjdg123",
             xsrf_cookies=True,
             debug=True,
+            ui_modules={'ScenarioStep':ScenarioStepModule}
            ) 
         tornado.web.Application.__init__(self,handlers,**settings)
         self.db = motor.MotorClient('localhost',27017)['zamax']

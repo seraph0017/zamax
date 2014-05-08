@@ -47,28 +47,28 @@ def init_db():
         "_id":scenario1_id,
         "name":"admin",
         "steps":[
-            step1_id,step2_id,step3_id,step4_id 
+            "login","logout","verify","kill"
             ]
         })
     db.scenario.insert({
         "_id":scenario2_id,
         "name":"account",
         "steps":[
-            step1_id,step2_id,step3_id,step4_id 
+            "login","logout","verify","kill"
             ]
         })
     db.scenario.insert({
         "_id":scenario3_id,
         "name":"normal",
         "steps":[
-            step1_id,step2_id,step3_id,step4_id 
+            "login","logout","verify","kill"
             ]
         })
     db.scenario.insert({
         "_id":scenario4_id,
         "name":"lower",
         "steps":[
-            step1_id,step2_id,step3_id,step4_id 
+            "login","logout","verify","kill"
             ]
         })
     db.feature.drop()
